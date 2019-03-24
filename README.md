@@ -12,7 +12,3 @@ Optional arguments:
 
 Required arguments: 
 --ps  SCRIPT Obfuscate PowerShell script 
-
- 
- 
- 

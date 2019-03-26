@@ -5,6 +5,7 @@ Requires python3
 usage: PyFuscation.py [-h] [-f] [-v] [-p] [--ps SCRIPT] 
 
 Optional arguments: 
+
 	• -h, --help show this help message and exit
   
 	• -f    Obfuscate functions
@@ -17,7 +18,7 @@ Optional arguments:
 		○  If your going to obfuscate parameters do the variables too. 
 
 
-Required arguments: 
---ps  SCRIPT Obfuscate PowerShell script 
+Required arguments:
+--ps  <SCRIPT> 	Obfuscate PowerShell script 
 
-root@pyDev:/opt/PyFuscation$ python3 PyFuscation.py -fvp --ps ./Scripts/Invoke-Mimikatz.ps1 
+	python3 PyFuscation.py -fvp --ps ./Scripts/Invoke-Mimikatz.ps1 

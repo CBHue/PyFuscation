@@ -43,6 +43,8 @@ def removeJunk(oF):
     realTimeMuxER(cmd)
     cmd = "sed -i -e \'s/^[[:space:]]*#.*$//g\' " + oF
     realTimeMuxER(cmd)
+    cmd = "sed -i \'/^$/d\' " + oF
+    realTimeMuxER(cmd)
 
 def useSED(DICT, oF):
     for var in DICT:
@@ -167,9 +169,9 @@ def findVARs(iFile,lFile):
                         ofHandle.write("Replacing: " + i + " with: " + new + "\n")
                         VARs[i] = new
                     else:
-                        vNum = 9999
-                        new = "$" + ''.join([random.choice(string.ascii_letters + str(vNum)) for n in range(15)])
-                        VARs[i] = new
+                        vNum = 99
+                        new = "$" + ''.join([random.choice(string.ascii_letters) for n in range(8)])
+                        VARs[i] = new + str(vNum)
                         ofHandle.write("Replacing: " + i + " with: " + new + "\n")
                         vNum += 1
 

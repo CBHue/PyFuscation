@@ -188,7 +188,7 @@ def findFUNCs(iFile,lFile):
             funcMatch = re.search(r'^\s*Function ([a-zA-Z0-9_-]{6,})[\s\{]+$',line, re.IGNORECASE)
             if funcMatch and funcMatch.group(1) not in FUNCs: 
                 if funcMatch.group(1) == "main":
-                    exit()
+                    continue
                 vNum = 9999
                 new = randomString(wordList)
                 FUNCs[funcMatch.group(1)] = new

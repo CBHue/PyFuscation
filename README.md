@@ -2,6 +2,8 @@
 
 Requires python3 
 
+![alt text](https://github.com/CBHue/PyFuscation/blob/master/PyFuscation.png)
+
 usage: PyFuscation.py [-h] [-f] [-v] [-p] [--ps SCRIPT] 
 
 Optional arguments: 

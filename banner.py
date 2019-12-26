@@ -18,7 +18,7 @@ def printP(out): print("\033[95m{}\033[00m" .format("[-] " + out))
 
 def title():
 	print("------------------------------------------------------------------------------------------------------")
-	printY("Tool      : PyFuscation")
+	printY("Tool      : PyFuscation - DEV!!!")
 	printY("Author    : CB Hue")
 	printY("Twitter   : @_cbhue_")
 	printY("github    : https://github.com/CBHue")

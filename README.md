@@ -19,8 +19,11 @@ Optional arguments:
 	• -p    Obfuscate parameters
 		○  If your going to obfuscate parameters do the variables too. 
 
+		
+	• -w    Remove WhiteSpace/Comments
+		○  Remove the comments and whitespace. 
 
 Required arguments:
---ps  <SCRIPT> 	Obfuscate PowerShell script 
+--ps  <SCRIPT> 	Obfuscate script 
 
-	python3 PyFuscation.py -fvp --ps ./Scripts/Invoke-Mimikatz.ps1 
+	python3 PyFuscation.py -wfvp --ps ./Scripts/Invoke-Mimikatz.ps1 

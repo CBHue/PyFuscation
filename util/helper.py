@@ -45,6 +45,4 @@ def useSED(DICT, oF):
     for var in DICT:
         new = str(DICT.get(var))
         cmd = "sed -i -e \'s/" + '\\<' + var + '\\>' + "/" + new + "/g\' " + oF
-        #cmd = "sed -i -e \'s/" + var +'\\b' + "/" + new + "/g\' " + oF
-        #cmd = "sed -i -e \'s/" + '\\b' + var + '\\b' + "/" + new + "/g\' " + oF
         realTimeMuxER(cmd)

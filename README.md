@@ -2,7 +2,7 @@
 
 Requires python3 
 
-![alt text](https://github.com/CBHue/PyFuscation/blob/master/PyFuscation.png)
+![alt text](https://github.com/CBHue/PyFuscation/blob/dev/PyFuscation.png)
 
 usage: PyFuscation.py [-h] [-w] [-f] [-v] [-p] [--ps SCRIPT] 
 

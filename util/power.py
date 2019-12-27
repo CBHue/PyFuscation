@@ -80,12 +80,7 @@ def findCustomParams(iFile,oFile,VARs):
                 continue
 
     helper.printY("Parameters Replaced : " + str(len(PARAMs)))
-
     return PARAMs
-
-    # return dict of variable and their replacements
-    helper.printY("Variables Replaced  : " + str(len(VARs)))
-    return VARs
 
 def findVARs(iFile,lFile):
     VARs = {}
@@ -93,7 +88,6 @@ def findVARs(iFile,lFile):
     
     # Powershell variables that start with $
     regex = r'(\$\w{6,})'
-
     ofHandle = open(lFile, 'w')
 
     with open(iFile, "r") as f:
@@ -131,7 +125,7 @@ def findFUNCs(iFile,lFile):
                 if funcMatch.group(1) == "main":
                     continue
                 vNum = 9999
-                new = randomString(wordList)
+                new = helper.randomString()
                 FUNCs[funcMatch.group(1)] = new
                 ofHandle.write("Replacing: " + funcMatch.group(1) + " with: " + str(new) + "\n")
                 vNum += 1

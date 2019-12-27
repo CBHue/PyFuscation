@@ -19,10 +19,6 @@ Optional arguments:
 	• -p    Obfuscate parameters
 		○  If your going to obfuscate parameters do the variables too. 
 
-		
-	• -w    Remove WhiteSpace/Comments
-		○  Remove the comments and whitespace. 
-
 Required arguments:
 --ps  <SCRIPT> 	Obfuscate script 
 

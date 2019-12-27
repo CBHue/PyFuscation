@@ -22,4 +22,4 @@ Optional arguments:
 Required arguments:
 --ps  <SCRIPT> 	Obfuscate script 
 
-	python3 PyFuscation.py -wfvp --ps ./Scripts/Invoke-Mimikatz.ps1 
+	python3 PyFuscation.py -fvp --ps ./Scripts/Invoke-Mimikatz.ps1 

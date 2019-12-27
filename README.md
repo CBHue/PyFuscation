@@ -26,3 +26,5 @@ Required arguments:
 --ps  <SCRIPT> 	Obfuscate script 
 
 	python3 PyFuscation.py -wfvp --ps ./Scripts/Invoke-Mimikatz.ps1 
+
+Currently works with Powershell, WebShells (ASP, ASPX)

@@ -4,7 +4,7 @@ Requires python3
 
 ![alt text](https://github.com/CBHue/PyFuscation/blob/master/PyFuscation.png)
 
-usage: PyFuscation.py [-h] [-f] [-v] [-p] [--ps SCRIPT] 
+usage: PyFuscation.py [-h] [-w] [-f] [-v] [-p] [--ps SCRIPT] 
 
 Optional arguments: 
 
@@ -19,7 +19,6 @@ Optional arguments:
 	• -p    Obfuscate parameters
 		○  If your going to obfuscate parameters do the variables too. 
 
-		
 	• -w    Remove WhiteSpace/Comments
 		○  Remove the comments and whitespace. 
 

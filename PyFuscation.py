@@ -18,33 +18,6 @@ import util.asp as asp
 import util.power as power
 import util.helper as helper
 
-def THEreplacER(DICT, iF, oF):
-    iFHandle = open(iF, 'r')
-    ofHandle = open(oF, 'w')
-    regex = r'(\$\w{3,})'
-    lower_DICT = list(map(lambda x:x.lower(),DICT))
-    # For var replace with Dictionary value
-    for line in iFHandle:
-        v = re.findall(regex,line)
-        if not v:
-            #print("Not: " + line)
-            ofHandle.write(line + "\n")
-            ofHandle.flush()
-        else:
-            for var in v:
-                if var.lower() in lower_DICT:
-                    new = str(DICT.get(var))
-                    #print("Replacing " + var + " with " + new)
-                    ofHandle.write(line.replace(var, new) + "\n")
-                    ofHandle.flush()
-                else:
-                    #print(var)
-                    ofHandle.write(line + "\n")
-                    ofHandle.flush()
-
-    iFHandle.close()
-    ofHandle.close()
-
 def main():
     iFile = args.script
     sType = "CBH"
@@ -56,6 +29,9 @@ def main():
         sType = "power"
     elif (".asp" in args.script):
         helper.printY("File Type: " + "\033[94m" + "ASP")
+        sType = "asp"
+    elif (".jsp" in args.script):
+        helper.printY("File Type: " + "\033[94m" + "JSP")
         sType = "asp"
     else:
         helper.printR("Unknown File Type: " + args.script)
@@ -79,25 +55,28 @@ def main():
     obfuFUNCs   = dict()
 
     # Remove White space and comments
-    if (args.white):
+    if (args.white or args.all):
         helper.removeJunk(oFile)
 
     # Obfuscate Variables
-    if (args.var):
+    if (args.var or args.all):
         obfuVAR = globals()[sType].findVARs(iFile,vFile) 
-        helper.useSED(obfuVAR, oFile)
+        #helper.useSED(obfuVAR, oFile)
+        helper.THEreplacER(obfuVAR, oFile)
         helper.printP("Obfuscated Variables located  : " + vFile)
 
     # Obfuscate custom parameters
-    if (args.par):
+    if (args.par or args.all):
         obfuPARMS = globals()[sType].findCustomParams(iFile, pFile, obfuVAR)
         helper.useSED(obfuPARMS, oFile)
+        #helper.THEreplacER(obfuPARMS, oFile)
         helper.printP("Obfuscated Parameters located : " + pFile)
 
     # Obfuscate Functions
-    if (args.func):
+    if (args.func or args.all):
         obfuFUNCs = globals()[sType].findFUNCs(iFile, fFile)
         helper.useSED(obfuFUNCs, oFile)
+        #helper.THEreplacER(obfuFUNCs, oFile)
 
         # Print the Functions
         print("")
@@ -121,10 +100,11 @@ if __name__ == "__main__":
     banner.title()
 
     parser = ArgumentParser()
-    parser.add_argument("-f",    dest="func",    help="Obfuscate functions",         action="store_true")
-    parser.add_argument("-v",    dest="var",     help="Obfuscate variables",         action="store_true")
-    parser.add_argument("-p",    dest="par",     help="Obfuscate parameters",        action="store_true")
-    parser.add_argument("-w",    dest="white",   help="Remove WhiteSpace/Comments",  action="store_true")
+    parser.add_argument("-f",    dest="func",    help="Obfuscate functions",        action="store_true")
+    parser.add_argument("-v",    dest="var",     help="Obfuscate variables",        action="store_true")
+    parser.add_argument("-p",    dest="par",     help="Obfuscate parameters",       action="store_true")
+    parser.add_argument("-w",    dest="white",   help="Remove WhiteSpace/Comments", action="store_true")
+    parser.add_argument("--all", dest="all",     help="Obfuscate All",              action="store_true")    
     parser.add_argument("--ps",  dest="script",  help="Obfuscate Script")
     args = parser.parse_args()
 

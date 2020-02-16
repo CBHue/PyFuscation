@@ -1,7 +1,9 @@
 import os
+import re
 import random
 import shlex
 import subprocess
+import fileinput
 
 def randomString():
 	wordList = os.path.abspath(os.path.dirname(__file__)) + "/wordList.txt"
@@ -32,6 +34,10 @@ def removeJunk(oF):
     # general cleanup 
     cmd = "sed -i -e \'/<#/,/#>/c\\\\\' " + oF
     realTimeMuxER(cmd)
+    # Remove // Comments
+    cmd = "sed -i \'/\/\/.*$/d\' " + oF
+    realTimeMuxER(cmd)
+    # Remove empty Space
     cmd = "sed -i -e \'s/^[[:space:]]*#.*$//g\' " + oF
     realTimeMuxER(cmd)
     # Delete blank lines
@@ -42,7 +48,43 @@ def removeJunk(oF):
     realTimeMuxER(cmd)
 
 def useSED(DICT, oF):
-    for var in DICT:
-        new = str(DICT.get(var))
-        cmd = "sed -i -e \'s/" + '\\<' + var + '\\>' + "/" + new + "/g\' " + oF
-        realTimeMuxER(cmd)
+	for old in DICT:
+		new = str(DICT.get(old))
+		#cmd = "sed -i -e \'s/" + old + '\\>' + "/" + new + "/g\' " + oF
+		#cmd = "sed -i -e \'s/" + '[\\>|\\<|\\b|[:space:]]' + old + '[\\>|\\<|\\b|[:space:]]' + "/ " + new + " /g\' " + oF
+		#cmd = "sed -i -e \'s/" + '[\\>|\\<|\\b|[:space:]]' + old + '\\>' + "/" + new + "/g\' " + oF
+		#cmd = "sed -i -e \'s/" + '\\W' + old + '\\>' + "/" + new + "/g\' " + oF
+		#cmd = "sed -i -e \'s/" + '[^a-zA-Z0-9]' + old + '[^a-zA-Z0-9]' + "/" + new + "/g\' " + oF
+		cmd = "sed -i -e \'s/" + old + '\\b' + "/" + new + "/g\' " + oF
+		#print(cmd)
+		realTimeMuxER(cmd)
+
+def THEreplacER(DICT, oF):
+	#iFHandle = open(iF, 'r')
+	#ofHandle = open(oF, 'w')
+
+	# Loop over each word to be replaced
+	for old in DICT:
+		new = str(DICT.get(old))
+
+		# This means that r'\bfoo\b' matches 'foo', 'foo.', '(foo)', 'bar foo baz' but not 'foobar' or 'foo3'.
+		regex = r'%s\b' % re.escape(old)
+		# Trying to match $Computer but not $happy$computer
+		with fileinput.input(files=oF,inplace=True) as f:
+			for line in f:
+				if re.search(regex, line):
+					# This is kinda hacky ... 
+					sLine = line.split(" ")
+					nLine = ""
+					for word in sLine:
+						if re.search(regex, word):
+							word = word.strip()
+							w = word.replace(old, new)
+							nLine = nLine + " " + w
+						else:
+							nLine = nLine + " " + word
+
+					line = nLine
+					print(line.strip())
+				else:
+					print(line.strip())

@@ -22,16 +22,16 @@ def main():
     iFile = args.script
     sType = "CBH"
 
-    helper.printR("Obfuscating: " + iFile)
+    helper.printY("Obfuscating : " + "\033[94m" + iFile)
 
     if (".ps1" in args.script):
-        helper.printY("File Type: " + "\033[94m" + "Powershell")
+        helper.printY("File Type   : " + "\033[94m" + "Powershell")
         sType = "power"
     elif (".asp" in args.script):
-        helper.printY("File Type: " + "\033[94m" + "ASP")
+        helper.printY("File Type   : " + "\033[94m" + "ASP")
         sType = "asp"
     elif (".jsp" in args.script):
-        helper.printY("File Type: " + "\033[94m" + "JSP")
+        helper.printY("File Type   : " + "\033[94m" + "JSP")
         sType = "asp"
     else:
         helper.printR("Unknown File Type: " + args.script)
@@ -48,7 +48,7 @@ def main():
     pFile = oDir + "/" + ts + ".parameters"
 
     shutil.copy(args.script, oFile)
-    helper.printR("Out File   : " + oFile)    
+    helper.printY("Out File    : " + "\033[94m" + oFile)    
 
     obfuVAR     = dict()
     obfuPARMS   = dict()
@@ -56,6 +56,7 @@ def main():
 
     # Remove White space and comments
     if (args.white or args.all):
+        helper.printY("Comments Replaced   : *")
         helper.removeJunk(oFile)
 
     # Obfuscate Variables

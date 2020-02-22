@@ -118,5 +118,4 @@ if __name__ == "__main__":
         if not os.path.isfile(args.script):
             helper.printR("Check File: " + args.script)
             exit()  
-
     main()

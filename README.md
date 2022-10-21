@@ -1,8 +1,10 @@
 # PyFuscation
 
-Requires python3 
+Requires python3. Previous versions and the original repo do not state it but 
+the script relies heavily on sed. This version has replaced sed commands with
+pure Python imporving Windows compatibility and future support.
 
-![alt text](https://github.com/CBHue/PyFuscation/blob/master/PyFuscation.png)
+![screenshot](screenshot.png)
 
 usage: PyFuscation.py [-h] [-f] [-v] [-p] [--ps SCRIPT] 
 

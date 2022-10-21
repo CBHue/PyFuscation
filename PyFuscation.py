@@ -256,8 +256,7 @@ def obfuscate():
 
     printP("Obfuscated script located at  : " + oFile)
     execution_time = (time.time() - time_start)
-    print(f"Executed in: {execution_time}") 
-    printY()
+    printY(f"Executed in: {execution_time}") 
 
 if __name__ == "__main__":
     

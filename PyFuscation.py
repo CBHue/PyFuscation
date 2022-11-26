@@ -1,12 +1,5 @@
 #!/usr/bin/env python3
 
-'''
- 
- 	PyFuscation.py
-    This python3 script obfuscates powershell function, variable and parameters in an attempt to bypass AV blacklists 
-
-'''
-
 import re
 import os
 import sys
@@ -19,7 +12,6 @@ import shlex
 import string
 from argparse import ArgumentParser
 import configparser
-import fileinput
 import banner
 
 def printR(out): print("\033[91m{}\033[00m" .format("[!] " + out)) 
@@ -27,30 +19,39 @@ def printG(out): print("\033[92m{}\033[00m" .format("[*] " + out))
 def printY(out): print("\033[93m{}\033[00m" .format("[+] " + out)) 
 def printP(out): print("\033[95m{}\033[00m" .format("[-] " + out)) 
 
-def realTimeMuxER(command):
-    p = subprocess.Popen(shlex.split(command), stdout=subprocess.PIPE)
-    while True:
-        output = p.stdout.readline().decode()
-        if output == '' and p.poll() is not None:
-            break
-        if output:
-            print(output.strip())
-    rc = p.poll()
-
-def removeJunk(oF):
+def removeJunk(iF, oF):
+    is_code = True
     # general cleanup 
-    cmd = "sed -i -e \'/<#/,/#>/c\\\\\' " + oF
-    realTimeMuxER(cmd)
-    cmd = "sed -i -e \'s/^[[:space:]]*#.*$//g\' " + oF
-    realTimeMuxER(cmd)
-    cmd = "sed -i \'/^$/d\' " + oF
-    realTimeMuxER(cmd)
+    with open(iF, 'r') as fin:
+        script_contents = fin.readlines()
 
-def useSED(DICT, oF):
+    with open(oF, 'w') as fout:
+        for line in script_contents:
+            line = line.lstrip()
+
+            if line.startswith('#') and not line.startswith("#>"):
+                pass
+            elif line.startswith("<#"):
+                is_code = False
+            elif line.startswith('\n'):
+                pass
+            elif line.startswith("#>"):
+                is_code = True
+            else:
+                if is_code:
+                    fout.write(line)
+
+def replaceObject(DICT, oF):
+    with open(oF, 'r') as fout:
+        obfsucated_script_contents = fout.read()
+
     for var in DICT:
         new = str(DICT.get(var))
-        cmd = "sed -i -e \'s/" + var +'\\b' + "/" + new + "/g\' " + oF
-        realTimeMuxER(cmd)
+        obfsucated_script_contents = obfsucated_script_contents.replace(var, new)
+    
+    with open(oF, 'w') as fout:
+        fout.write(obfsucated_script_contents)
+
 
 def THEreplacER(DICT, iF, oF):
     iFHandle = open(iF, 'r')
@@ -207,9 +208,10 @@ def randomString(iFile):
         string = ''.join(e for e in line if e.isalnum())
         return string
 
-def main():
+def obfuscate():
     iFile = args.script
 
+    time_start = time.time()
     printR("Obfuscating: " + iFile)
     ts = time.strftime("%m%d%Y_%H_%M_%S", time.gmtime())
     oDir = os.path.dirname(args.script) + "/" + ts
@@ -225,24 +227,24 @@ def main():
     obfuFUNCs   = dict()
 
     # Remove White space and comments
-    removeJunk(oFile)
+    removeJunk(iFile, oFile)
 
     # Obfuscate Variables
     if (args.var):
         obfuVAR = findVARs(iFile,vFile) 
-        useSED(obfuVAR, oFile)
+        replaceObject(obfuVAR, oFile)
         printP("Obfuscated Variables located  : " + vFile)
 
     # Obfuscate custom parameters
     if (args.par):
         obfuPARMS = findCustomParams(iFile, pFile, obfuVAR)
-        useSED(obfuPARMS, oFile)
+        replaceObject(obfuPARMS, oFile)
         printP("Obfuscated Parameters located : " + pFile)
 
     # Obfuscate Functions
     if (args.func):
         obfuFUNCs = findFUNCs(iFile, fFile)
-        useSED(obfuFUNCs, oFile)
+        replaceObject(obfuFUNCs, oFile)
 
         # Print the Functions
         print("")
@@ -255,6 +257,8 @@ def main():
         printP("Obfuscated Functions located  : " + fFile)
 
     printP("Obfuscated script located at  : " + oFile)
+    execution_time = (time.time() - time_start)
+    printY(f"Executed in: {execution_time}") 
 
 if __name__ == "__main__":
     
@@ -294,4 +298,4 @@ if __name__ == "__main__":
         printR("Check wordList: " + wordList)
         exit()
 
-    main()
+    obfuscate()
